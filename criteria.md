@@ -22,7 +22,7 @@ pipeline earns credit; *"80% seemed reasonable"* does not.
 For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
-**Why this target:**
+**Why this target: One of my question is about a topic need **
 <!-- e.g. "One of my questions is about a topic only two documents mention, so
      I expect that one to be hard." -->
 
@@ -32,7 +32,7 @@ contains the answer.
 
 Every answer the system produces names at least one source document.
 
-**Why this target:**
+**Why this target: Most of my questions specify the specific region/source so the answer should be reference from that particular source easily.**
 <!-- Why all five and not four? What about your setup makes that achievable —
      or what would have to go wrong for it not to be? -->
 
@@ -56,40 +56,19 @@ in at least 4 of 5 tries.
 ---
 
 ## 4. Something about your chunks
-
-<!-- YOU WRITE THIS ONE.
-
-     How would you know if your chunks were the right size? Name something
-     countable or observable.
-
-     Examples of the right shape — don't copy these, they should come from
-     what you actually saw in Milestone 3:
-       - "At least 4 of 5 sampled chunks read as a complete thought, with no
-          sentence cut in half at either end."
-       - "No chunk is shorter than 200 characters, since anything below that
-          in my corpus turned out to be a heading with no content under it." -->
+At least 90% of chunks are longer than 200 characters and shorter than 700 characters, so each result focuses on an appropriate amount of information.
 
 
 
-**Why this target:**
-
+**Why this target: Most of my documents contain several sentences of advice or information, so chunks shorter than 200 characters may lack enough context to answer a question. I chose 700 characters as the upper limit because larger chunks could combine multiple topics and make retrieval less focused.**
 
 
 ---
 
 ## 5. Your choice
+At least 4 of 5 sampled chunks contain a complete sentence or paragraph.
 
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. It could be about
-     speed, about refusals, about a particular kind of question your corpus
-     handles badly, about source attribution being correct rather than merely
-     present — anything, as long as it names a number or an observable
-     outcome. -->
-
-
-
-**Why this target:**
+**Why this target: A chunk that ends in the middle of a sentence or paragraph may leave out important context and make the retrieved answer harder to understand. I chose 4 out of 5 because checking a sample gives me a practical way to measure whether the chunking strategy usually preserves complete ideas.**
 
 
 
