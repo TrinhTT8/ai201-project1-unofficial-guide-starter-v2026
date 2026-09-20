@@ -29,8 +29,8 @@
 
 ## Chunking Strategy
 
-**Chunk size: Not needed**
-**Overlap: Not needed**
+**Chunk size**: Not needed
+**Overlap**: Not needed
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
@@ -106,15 +106,15 @@ Brightwater goes quiet to the point of dullness with the university empty.
 <!-- One complete question and answer, pasted as text, with the source line
      visible. Milestone 4. -->
 
-**Question:**
+**Question**: What is a good market for Saturday and weekday morning within the region?
 
-**Answer:**
-
-```
+**Answer**: For a Saturday market, Kestrelford's market has run since the 1400s and is the region's best (`guide_eating.md` and `guide_kestrelford.md`). For a weekday morning, Marchwood's covered market is at its best at that time (`guide_eating.md`).
 
 ```
+Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
+```
 
-**My relevance cutoff:**
+**My relevance cutoff**: 0.7
 
 <!-- The number you set in config.py, and how you got there.
 
@@ -125,9 +125,18 @@ Brightwater goes quiet to the point of dullness with the university empty.
 
      Milestone 4. -->
 
-| Question | In corpus? | Best distance |
-| -------- | ---------- | ------------- |
-|          |            |               |
+| Question       | In corpus? | Best distance |
+| -------------- | ---------- | ------------- |
+| Covered Q1     | Yes        | 0.411         |
+| Covered Q2     | Yes        | 0.5533        |
+| Covered Q3     | Yes        | 0.5630        |
+| Covered Q4     | Yes        | 0.5255        |
+| Covered Q5     | Yes        | 0.3389        |
+| Uncovered Q1   | No         | 0.803         |
+| Uncovered Q2   | No         | 0.892         |
+| Uncovered Q3   | No         | 0.975         |
+| Uncovered Q4   | No         | 0.837         |
+| Uncovered Q5   | No         | 0.813         |
 
 ## How I Used AI
 
