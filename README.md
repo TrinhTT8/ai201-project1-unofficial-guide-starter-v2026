@@ -1,19 +1,8 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+**Trinh Tran**
 
-> **This file is your submission.** Fill it in as you go — most sections get
-> written during the milestone that produces them, not at the end.
->
-> How the starter works, and every command you'll need, is in `RUNNING.md`.
-> Leave that file alone.
->
-> **Paste everything as text.** No screenshots, no video. A typed table gets
-> full credit; a picture of the same table gets none.
->
-> Delete these instruction blocks as you replace them. The `<!-- -->` comments
-> are notes to you and don't show up when the page renders — you can leave them
-> or remove them.
+**Chosen corpus**: city_guides
 
 ---
 
@@ -27,9 +16,12 @@
 
      Milestone 5. -->
 
+This repo uses the city_guides corpus, regional travel guides covering practical details across several villages and towns, like transit costs, market days, accessibility, and seasonal opening times. The system answers specific questions a traveler would actually ask before a trip (e.g. "How available is cash in Thornby Wells?" or "What's a tip for saving on ticket costs in Marchwood?"), retrieving the guide passages that support each answer and naming the source document. The system will also refuse questions that are outside of the scope and not covered within the guide.
+
 ## Chunking Strategy
 
 **Chunk size**: Not needed
+
 **Overlap**: Not needed
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
@@ -125,18 +117,18 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
      Milestone 4. -->
 
-| Question       | In corpus? | Best distance |
-| -------------- | ---------- | ------------- |
-| Covered Q1     | Yes        | 0.411         |
-| Covered Q2     | Yes        | 0.5533        |
-| Covered Q3     | Yes        | 0.5630        |
-| Covered Q4     | Yes        | 0.5255        |
-| Covered Q5     | Yes        | 0.3389        |
-| Uncovered Q1   | No         | 0.803         |
-| Uncovered Q2   | No         | 0.892         |
-| Uncovered Q3   | No         | 0.975         |
-| Uncovered Q4   | No         | 0.837         |
-| Uncovered Q5   | No         | 0.813         |
+| Question     | In corpus? | Best distance |
+| ------------ | ---------- | ------------- |
+| Covered Q1   | Yes        | 0.411         |
+| Covered Q2   | Yes        | 0.5533        |
+| Covered Q3   | Yes        | 0.5630        |
+| Covered Q4   | Yes        | 0.5255        |
+| Covered Q5   | Yes        | 0.3389        |
+| Uncovered Q1 | No         | 0.803         |
+| Uncovered Q2 | No         | 0.892         |
+| Uncovered Q3 | No         | 0.975         |
+| Uncovered Q4 | No         | 0.837         |
+| Uncovered Q5 | No         | 0.813         |
 
 ## How I Used AI
 
@@ -149,9 +141,9 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
      Milestone 5. -->
 
-**1.**
+**1.** I used AI to walk me through the code within the given functions. I came up with the logic of the chunking function, explained it to Claude and asked it to generate the function for me. I took out the chunk size and overlap since I deemed them as unecessary.
 
-**2.**
+**2.** After running all of the 5 covered and 5 uncovered questions, I pasted the best distances to Claude and explained why I chose 0.7 as my cutoff number. Combining wih the guided questions in Milestone 4, I had Claude reply with the most appropriate cutoff number and why. It also suggested somewhere between 0.5 and 0.7.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
