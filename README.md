@@ -172,15 +172,81 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
 | Criterion                              | Target | Run 1 | Run 2 | Run 3 | Verdict |
 | -------------------------------------- | ------ | ----- | ----- | ----- | ------- |
-| 1. Retrieved chunk contains the answer | 4 of 5 |       |       |       |         |
-| 2. Every answer names a source         | 5 of 5 |       |       |       |         |
-| 3. Gate stops out-of-corpus questions  | 4 of 5 |       |       |       |         |
-| 4.                                     |        |       |       |       |         |
-| 5.                                     |        |       |       |       |         |
+| 1. Retrieved chunk contains the answer | 4 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
+| 2. Every answer names a source         | 5 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
+| 3. Gate stops out-of-corpus questions  | 4 of 5 |  5/5  |  5/5  |  5/5  |   MET   |
+| 4. Chunk length (200 - 700 characters) | 4 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
+| 5. Contained complete sentence or      | 4 of 5 |  5/5  |  5/5  |  5/5  |   MET   |
+     paragraph                           |        |       |       |       |         |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
      Name the file and function that produced it. -->
+
+### 1. Retrieved chunks contain the answer
+
+Produced by: `store.py::search`, chunks from `chunker.py::split_documents`
+
+**During what season shouldn't you visit Given Mills?** — top chunk, `guide_givens_mill.md`:
+"The mill runs March to November and is closed entirely in winter."
+→ contains the answer.
+
+**How available is cash for Thornby Wells and Pellew Sands?** — top chunk, `guide_eating.md`:
+"Cash is still useful at markets and in the smaller villages. Corry Vale has a
+farm shop..." (about Corry Vale/Elder Ness, not Thornby Wells/Pellew Sands)
+→ does not contain the answer.
+
+### 2. Every answer names a source
+
+Produced by: `generate.py::answer_from_chunks` — run_2026-09-23_1952_before.md, run 1
+
+**What is a good market for Saturday and weekday morning within the region?**
+"Kestrelford's Saturday market runs year-round (though much reduced from
+November to February), and Marchwood's covered market is at its best on a
+weekday morning.
+
+Source: `guide_eating.md`"
+
+**How available is cash for Thornby Wells and Pellew Sands?**
+"I do not have enough information to answer how available cash is for
+Thornby Wells and Pellew Sands."
+
+→ no source named (this is the refusal case worth noting in your write-up).
+
+### 3. The relevance gate stops out-of-corpus questions
+
+Produced by: `run_eval.py::check_out_of_scope`
+
+| Out-of-scope question | Best distance | Gate |
+|---|---|---|
+| What is the capital of Mongolia? | 0.803 | refused |
+| How do I change the oil in a diesel engine? | 0.892 | refused |
+| Who won the 1994 World Cup? | 0.975 | refused |
+| What is the recommended dosage of ibuprofen for a headache? | 0.849 | refused |
+| How do I write a for loop in Rust? | 0.813 | refused |
+
+Refused 5 of 5.
+
+### 4. Chunk length (200-700 characters)
+
+Produced by: `store.py::search`
+
+"What does the guide say about parking?" — top chunk, `guide_regional_transport.md`, 167 chars:
+"Parking is the constraint rather than driving. Both Halden Bay lots fill by
+10am on summer weekends. Kestrelford's lower car park is free and involves a
+steep walk up."
+→ out of range (too short).
+
+### 5. Chunks contain a complete sentence or paragraph
+
+Produced by: `store.py::search`
+
+"What is a good market for Saturday and weekday morning within the region?" — top chunk, `guide_eating.md`:
+"## Markets
+
+Kestrelford's Saturday market has run since the 1400s and is the region's best,
+though much reduced from November to February..."
+→ complete heading + full sentences, no mid-cut.
 
 ## Verdicts
 
@@ -193,13 +259,13 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
      Milestone 2. -->
 
-| #   | Criterion | Verdict | How I decided |
-| --- | --------- | ------- | ------------- |
-| 1   |           |         |               |
-| 2   |           |         |               |
-| 3   |           |         |               |
-| 4   |           |         |               |
-| 5   |           |         |               |
+| #   | Criterion                                    | Verdict | How I decided |
+| --- | -------------------------------------------- | ------- | ------------- |
+| 1   | Retrieved chunk contains the answer          |  MISSED |               |
+| 2   | Every answer names a source                  |  MISSED |               |
+| 3   | Gate stops out-of-corpus questions           |  MET    |               |
+| 4   | Chunk length (200 - 700 characters)          |  MISSED |               | 
+| 5   | Chunk contain a complete sentence/paragraph  |  MET    |               |
 
 ## Diagnoses
 
