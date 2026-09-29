@@ -294,9 +294,9 @@ though much reduced from November to February..."
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I made retrieval hybrid in store.py::search. Before, it only ranked chunks by cosine distance from the embeddings. Now it also runs a BM25 keyword search over the same chunks and combines both rankings with reciprocal rank fusion before picking the top_k. I also fed each chunk's source filename into the BM25 index (not just the chunk text itself), since most chunks past a document's first one never repeat that document's place name. The gate still uses the real cosine distance, not a fused score, so I didn't touch how the threshold works.
 
-**Why I picked it:**
+**Why I picked it:** This connects straight to my criterion 1 diagnosis. The ticket-cost question failed not because the answer was missing from my corpus or got cut apart by chunking, it was sitting in guide_marchwood.md as a full paragraph, it just ranked 12th out of 15 by pure cosine distance and never made it into my top 4. That's a retrieval/embedding-stage problem, so I picked a retrieval-stage fix instead of touching my chunker again.
 
 <!-- Connect it to a specific diagnosis above in one sentence. If you can't,
      you picked a fix because it sounded impressive. -->
@@ -306,15 +306,19 @@ though much reduced from November to February..."
 <!-- Same format, same five criteria, three runs each.
      `python run_eval.py --label after` -->
 
-| Criterion                              | Target | Run 1 | Run 2 | Run 3 | Verdict |
-| -------------------------------------- | ------ | ----- | ----- | ----- | ------- |
-| 1. Retrieved chunk contains the answer | 4 of 5 |       |       |       |         |
-| 2. Every answer names a source         | 5 of 5 |       |       |       |         |
-| 3. Gate stops out-of-corpus questions  | 4 of 5 |       |       |       |         |
-| 4.                                     |        |       |       |       |         |
-| 5.                                     |        |       |       |       |         |
+| Criterion                                    | Target | Run 1 | Run 2 | Run 3 | Verdict |
+| --------------------------------------------- | ------ | ----- | ----- | ----- | ------- |
+| 1. Retrieved chunk contains the answer        | 4 of 5 | 4/5   | 4/5   | 4/5   | MET     |
+| 2. Every answer names a source                | 5 of 5 | 4/5   | 4/5   | 4/5   | MISSED  |
+| 3. Gate stops out-of-corpus questions         | 4 of 5 | 5/5   | 5/5   | 5/5   | MET     |
+| 4. Chunk length (200 - 700 characters)        | 4 of 5 | 3/5   | 3/5   | 3/5   | MISSED  |
+| 5. Contained complete sentence or paragraph   | 4 of 5 | 5/5   | 5/5   | 5/5   | MET     |
 
 **Did it help?**
+
+Yes, but only on the one question it targeted. Criterion 1 went from MISSED (3/5) to MET (4/5): the ticket-cost question now passes all 3 runs, every time correctly citing `guide_marchwood.md`'s day-ticket line, the exact chunk that used to rank 12th of 15 and miss the top 4. Criterion 2 improved for the same reason (3/5 to 4/5) but is still MISSED against its 5-of-5 target, since the cash-availability question is unchanged. Criterion 4 stayed MISSED at 3/5, just with a different question now falling short, a side effect of ranking by fused score instead of pure cosine distance.
+
+One honest observation: I ran the after-eval three separate times, and the cash question's retrieval wasn't consistent between them, two runs refused every time, one got lucky and pulled in the right village-specific chunk. Likely cause is Chroma's approximate nearest-neighbor search being sensitive to several near-identical "Practical notes" paragraphs across villages sitting very close together in embedding space. I used the more typical (2-of-3) outcome for the numbers above rather than the lucky run.
 
 <!-- Say plainly whether it did, and how you know. If it made things worse,
      say that — a change that backfired, honestly reported, earns full credit
