@@ -286,6 +286,12 @@ though much reduced from November to February..."
 
      Milestone 3. -->
 
+**Criterion 1** (retrieved chunk contains the answer): Stage is retrieval/embedding, not chunking. Two questions failed here. For "What is a tip to saving ticket costs in Marchwood that nobody tells you?", the answer is literally sitting in the corpus: guide_marchwood.md has a chunk that says "A day ticket costs less than two single fares and nobody tells you this at the machine," basically a direct match. When I searched past my usual top_k=4 to see where that chunk actually ranked, it came back at position 12 out of 15. So it's not that chunking cut the sentence apart or that the fact is missing from my corpus, retrieval just did not rank it high enough to make the cut. For "How available is cash for Thornby Wells and Pellew Sands?", the mechanism is different but still retrieval. Almost every village guide in my corpus has a near-identical "Practical notes" paragraph that starts "Cash is still useful at the market and in smaller places..." It is basically boilerplate repeated across most documents. Because the wording is so similar everywhere, the embeddings can't tell which village's copy is the relevant one, so Thornby Wells' own version did not even show up in my top 15 results. What got retrieved instead were the intro chunks for those two villages, which name the towns but say nothing about cash.
+
+**Criterion 2** (every answer names a source): Same stage, retrieval/embedding, and the same two questions. This isn't a separate failure, it's a downstream effect of criterion 1. Since the chunk with the actual answer never made it into the top_k=4 for either question, the model never saw it, and per its grounding instruction it correctly said it did not have enough information instead of naming a source it never received. So the mechanism is: retrieval failure upstream means generation has nothing to cite.
+
+**Criterion 4** (90% of chunks between 200 and 700 characters): Stage is chunking. My chunker splits purely on paragraph breaks with no minimum length, so short paragraphs, like a one-line heading or a short intro sentence, become their own tiny chunk. Every chunk that fell outside my 200 to 700 range was too short (the longest "too short" one was 199 characters, and nothing was ever too long), which matches that mechanism: the splitter has no lower bound, so it produces very short chunks whenever a paragraph in the source document is short.
+
 ## The Improvement
 
 **What I changed:**
