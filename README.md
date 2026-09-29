@@ -145,6 +145,10 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
 **2.** After running all of the 5 covered and 5 uncovered questions, I pasted the best distances to Claude and explained why I chose 0.7 as my cutoff number. Combining wih the guided questions in Milestone 4, I had Claude reply with the most appropriate cutoff number and why. It also suggested somewhere between 0.5 and 0.7.
 
+**3.** For Unit 2, I used AI to help me with adding in keyword search code. I explained to Claude what I wanted to achieve by adding BM25 alongside matching on meaning. I had it generate the new function for me as I cross-checked the logic of the code. 
+
+**4.** I also leveraged Claude in diagnosing the miss. Initially, I thought the miss happened in the chunking stage; however, with Claude guiding me through the runs and doing a little bit more diagnosis, it suggested that the issue was within the retrieval and embedding stages instead. 
+
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
      claims earns nothing.
@@ -337,9 +341,17 @@ One honest observation: I ran the after-eval three separate times, and the cash 
 
      Milestone 5. -->
 
+**Criterion 2** (every answer names a source, 4/5, target 5/5): the cash-availability question is the one holding this back. Thornby Wells and Pellew Sands both have their own "Practical notes" paragraph with the actual cash info, but it's nearly word-for-word identical to seven other villages' versions, so nothing in retrieval, keyword or vector, can reliably tell them apart. What I'd try next is folding each village's name into its own chunks before embedding (not just the filename into the BM25 index like I did this round), so "Thornby Wells: cash is still useful..." embeds differently from the same sentence under a different village. I stopped short of doing this because I'd already spent my one Unit 2 fix on the retrieval-ranking problem, and this turned out to need a chunking-stage change instead, which is a second, separate fix I didn't have time to also implement and re-evaluate.
+
+**Criterion 4** (chunk length 200-700 characters, 3/5): still short chunks, same root cause as before the fix, my chunker has no minimum paragraph length, so a one-line heading or short intro becomes its own tiny chunk. The fix is straightforward, merge any chunk under some minimum (say 150 characters) into its neighbor, but I didn't touch it because my Unit 2 diagnosis pointed at retrieval, not chunking, and I wanted my one change to match my one diagnosis rather than bundling two fixes together and losing track of which one did what.
+
 ## What I'd Do Differently
 
 <!-- Knowing what you know now — which of your five criteria would you write
      differently, and why?
 
      Milestone 5. -->
+
+**Criterion 4** is the one I'd rewrite. Criteria.md says "at least 90% of chunks," but the Run Log tables score it against 5 sampled questions, and 90% of 5 isn't a whole number, so in practice I've been treating it as "4 of 5" without ever writing that down as the actual target. That's the same kind of problem the course warns about with criterion 1 in the worked example, a target that can't be checked the same way twice. I'd rewrite it against a fixed, larger sample (all chunks in the corpus, which I already have code to compute) instead of 5 questions' worth of top-ranked chunks, so the percentage means what it says.
+
+**Criterion 2** is the other one. Right now it silently counts a correct refusal (the gate/model correctly saying "not enough information") the same as an answer that should have had a source but didn't. Those are different failures, one is retrieval not finding the right chunk, the other would be the model citing nothing for an answer it did generate. I'd split it into two criteria next time so a diagnosis doesn't have to untangle which one actually happened after the fact.
