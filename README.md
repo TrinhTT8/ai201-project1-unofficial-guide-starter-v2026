@@ -170,14 +170,13 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
      Milestone 1. -->
 
-| Criterion                              | Target | Run 1 | Run 2 | Run 3 | Verdict |
-| -------------------------------------- | ------ | ----- | ----- | ----- | ------- |
-| 1. Retrieved chunk contains the answer | 4 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
-| 2. Every answer names a source         | 5 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
-| 3. Gate stops out-of-corpus questions  | 4 of 5 |  5/5  |  5/5  |  5/5  |   MET   |
-| 4. Chunk length (200 - 700 characters) | 4 of 5 |  3/5  |  3/5  |  3/5  |  MISSED |
-| 5. Contained complete sentence or      | 4 of 5 |  5/5  |  5/5  |  5/5  |   MET   |
-     paragraph                           |        |       |       |       |         |
+| Criterion                                   | Target | Run 1 | Run 2 | Run 3 | Verdict |
+| ------------------------------------------- | ------ | ----- | ----- | ----- | ------- |
+| 1. Retrieved chunk contains the answer      | 4 of 5 | 3/5   | 3/5   | 3/5   | MISSED  |
+| 2. Every answer names a source              | 5 of 5 | 3/5   | 3/5   | 3/5   | MISSED  |
+| 3. Gate stops out-of-corpus questions       | 4 of 5 | 5/5   | 5/5   | 5/5   | MET     |
+| 4. Chunk length (200 - 700 characters)      | 4 of 5 | 3/5   | 3/5   | 3/5   | MISSED  |
+| 5. Contained complete sentence or paragraph | 4 of 5 | 5/5   | 5/5   | 5/5   | MET     |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
@@ -187,18 +186,18 @@ Sources retrieved: guide_brightwater.md, guide_eating.md, guide_kestrelford.md
 
 Produced by: `store.py::search`, chunks from `chunker.py::split_documents`
 
-**During what season shouldn't you visit Given Mills?** — top chunk, `guide_givens_mill.md`:
+**During what season shouldn't you visit Given Mills?**, top chunk, `guide_givens_mill.md`:
 "The mill runs March to November and is closed entirely in winter."
 → contains the answer.
 
-**How available is cash for Thornby Wells and Pellew Sands?** — top chunk, `guide_eating.md`:
+**How available is cash for Thornby Wells and Pellew Sands?**, top chunk, `guide_eating.md`:
 "Cash is still useful at markets and in the smaller villages. Corry Vale has a
 farm shop..." (about Corry Vale/Elder Ness, not Thornby Wells/Pellew Sands)
 → does not contain the answer.
 
 ### 2. Every answer names a source
 
-Produced by: `generate.py::answer_from_chunks` — run_2026-09-23_1952_before.md, run 1
+Produced by: `generate.py::answer_from_chunks`, run_2026-09-23_1952_before.md, run 1
 
 **What is a good market for Saturday and weekday morning within the region?**
 "Kestrelford's Saturday market runs year-round (though much reduced from
@@ -217,13 +216,13 @@ Thornby Wells and Pellew Sands."
 
 Produced by: `run_eval.py::check_out_of_scope`
 
-| Out-of-scope question | Best distance | Gate |
-|---|---|---|
-| What is the capital of Mongolia? | 0.803 | refused |
-| How do I change the oil in a diesel engine? | 0.892 | refused |
-| Who won the 1994 World Cup? | 0.975 | refused |
-| What is the recommended dosage of ibuprofen for a headache? | 0.849 | refused |
-| How do I write a for loop in Rust? | 0.813 | refused |
+| Out-of-scope question                                       | Best distance | Gate    |
+| ----------------------------------------------------------- | ------------- | ------- |
+| What is the capital of Mongolia?                            | 0.803         | refused |
+| How do I change the oil in a diesel engine?                 | 0.892         | refused |
+| Who won the 1994 World Cup?                                 | 0.975         | refused |
+| What is the recommended dosage of ibuprofen for a headache? | 0.849         | refused |
+| How do I write a for loop in Rust?                          | 0.813         | refused |
 
 Refused 5 of 5.
 
@@ -231,7 +230,7 @@ Refused 5 of 5.
 
 Produced by: `store.py::search`
 
-"What does the guide say about parking?" — top chunk, `guide_regional_transport.md`, 167 chars:
+"What does the guide say about parking?", top chunk, `guide_regional_transport.md`, 167 chars:
 "Parking is the constraint rather than driving. Both Halden Bay lots fill by
 10am on summer weekends. Kestrelford's lower car park is free and involves a
 steep walk up."
@@ -241,7 +240,7 @@ steep walk up."
 
 Produced by: `store.py::search`
 
-"What is a good market for Saturday and weekday morning within the region?" — top chunk, `guide_eating.md`:
+"What is a good market for Saturday and weekday morning within the region?", top chunk, `guide_eating.md`:
 "## Markets
 
 Kestrelford's Saturday market has run since the 1400s and is the region's best,
@@ -259,13 +258,13 @@ though much reduced from November to February..."
 
      Milestone 2. -->
 
-| #   | Criterion                                    | Verdict | How I decided |
-| --- | -------------------------------------------- | ------- | ------------- |
-| 1   | Retrieved chunk contains the answer          |  MISSED |               |
-| 2   | Every answer names a source                  |  MISSED |               |
-| 3   | Gate stops out-of-corpus questions           |  MET    |               |
-| 4   | Chunk length (200 - 700 characters)          |  MISSED |               | 
-| 5   | Chunk contain a complete sentence/paragraph  |  MET    |               |
+| #   | Criterion                                   | Verdict | How I decided                                                                                                                                                                                                                         |
+| --- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Retrieved chunk contains the answer         | MISSED  | Only 3 of 5 top chunks actually contained the answer. The ticket-cost chunk never mentions day tickets or single fares, and the cash-availability chunk names different villages (Corry Vale, Elder Ness) than the ones asked about. |
+| 2   | Every answer names a source                 | MISSED  | 3 of 5 answers named a source; the two refused answers (cash, ticket costs) named none, since the model had nothing grounded to cite.                                                                                                 |
+| 3   | Gate stops out-of-corpus questions          | MET     | The gate refused all 5 out-of-corpus questions (best distance 0.803 or higher), clearing the 4-of-5 target with no borderline cases.                                                                                                  |
+| 4   | Chunk length (200 - 700 characters)         | MISSED  | Only 3 of the 5 top-retrieved chunks fell in the 200-700 character range (60%), well short of the 90% target.                                                                                                                         |
+| 5   | Chunk contain a complete sentence/paragraph | MET     | All 5 top-retrieved chunks ended on a complete sentence or heading, with no mid-thought cuts.                                                                                                                                         |
 
 ## Diagnoses
 
